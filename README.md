@@ -6,231 +6,139 @@
 [![Express](https://img.shields.io/badge/Express-4.x-blue.svg)](https://expressjs.com/)
 [![SQLite](https://img.shields.io/badge/SQLite-3.x-lightgrey.svg)](https://www.sqlite.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
 ## 📚 Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
 - [Technologies](#technologies)
-- [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
-- [Running the Project](#running-the-project)
+- [Project Structure](#project-structure)
+- [Available Scripts](#available-scripts)
 - [API Documentation](#api-documentation)
 - [API Endpoints](#api-endpoints)
 - [Database Schema](#database-schema)
+- [HTTP Status Codes](#http-status-codes)
+- [Response Examples](#response-examples)
 - [Testing](#testing)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
 - [License](#license)
+- [Contact](#contact)
+
+---
 
 ## 🚀 Overview
 
 This is a robust backend API for managing doctor appointments. Built with a clean, modular architecture following best practices. Perfect for clinics, medical centers, or any business that needs appointment scheduling.
 
+The API provides full CRUD operations for appointments, doctor management, search functionality, and statistics dashboard - all with auto-generated Swagger documentation.
+
+---
+
 ## ✨ Features
 
-- **Full CRUD Operations**: Create, Read, Update, Delete appointments
-- **Doctor Management**: Manage doctor profiles and specialties
-- **Search & Filter**: Search appointments by name or phone
-- **Statistics Dashboard**: Get appointment statistics
-- **RESTful API**: Clean and consistent API design
-- **Auto-generated Documentation**: Swagger/OpenAPI documentation
-- **SQLite Database**: Lightweight, no setup required
-- **CORS Enabled**: Ready for frontend integration
-- **Error Handling**: Comprehensive error handling
-- **Modular Architecture**: Clean separation of concerns
+| Feature              | Status | Description                                |
+| -------------------- | ------ | ------------------------------------------ |
+| Create Appointment   | ✅     | Add new appointments with doctor selection |
+| Read Appointments    | ✅     | List all appointments with search/filter   |
+| Update Appointment   | ✅     | Edit appointment details                   |
+| Delete Appointment   | ✅     | Remove appointments from system            |
+| Doctor Management    | ✅     | Manage doctor profiles and specialties     |
+| Search & Filter      | ✅     | Search appointments by name or phone       |
+| Statistics Dashboard | ✅     | Get appointment analytics and insights     |
+| API Documentation    | ✅     | Auto-generated Swagger/OpenAPI docs        |
+| Database Seeding     | ✅     | Initial data setup with sample doctors     |
+| CORS Support         | ✅     | Ready for frontend integration             |
+| Error Handling       | ✅     | Comprehensive error handling middleware    |
+| Modular Architecture | ✅     | Clean separation of concerns (MVC)         |
+| Authentication       | ⏳     | Coming soon                                |
+| User Roles           | ⏳     | Coming soon                                |
+| Email Notifications  | ⏳     | Coming soon                                |
+
+---
 
 ## 🛠 Technologies
 
-| Technology | Version | Description                   |
-| ---------- | ------- | ----------------------------- |
-| Node.js    | 18+     | JavaScript runtime            |
-| Express    | 4.18+   | Web framework                 |
-| SQLite3    | 5.1+    | Database                      |
-| SQLite     | 5.1+    | Database driver               |
-| Swagger    | 6.2+    | API documentation             |
-| Nodemon    | 3.0+    | Development auto-reload       |
-| CORS       | 2.8+    | Cross-origin resource sharing |
+| Technology | Version | Description                              |
+| ---------- | ------- | ---------------------------------------- |
+| Node.js    | 18+     | JavaScript runtime environment           |
+| Express    | 4.18+   | Web framework for Node.js                |
+| SQLite3    | 5.1+    | Lightweight SQL database engine          |
+| SQLite     | 5.1+    | SQLite database driver                   |
+| Swagger    | 6.2+    | API documentation generator              |
+| Nodemon    | 3.0+    | Development auto-reload tool             |
+| CORS       | 2.8+    | Cross-origin resource sharing middleware |
+| Dotenv     | 16.3+   | Environment variables loader             |
 
-## 📁 Project Structure
+---
 
-backend/
+## 🔧 Prerequisites
+
+| Requirement | Version   | Check Command    |
+| ----------- | --------- | ---------------- |
+| Node.js     | >= 18.0.0 | `node --version` |
+| npm         | >= 6.0.0  | `npm --version`  |
+| Git         | >= 2.0.0  | `git --version`  |
+
+---
+
+## 📥 Installation
+
+| Step | Command                                                  | Description                        |
+| ---- | -------------------------------------------------------- | ---------------------------------- |
+| 1    | `git clone https://github.com/A-miladi/Fitline-node.git` | Clone repository                   |
+| 2    | `cd Fitline-node`                                        | Navigate to project                |
+| 3    | `npm install`                                            | Install dependencies               |
+| 4    | `cp .env.example .env`                                   | Setup environment variables        |
+| 5    | `npm run seed`                                           | Seed database with initial doctors |
+| 6    | `npm run dev`                                            | Start development server           |
+
+---
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+| Variable  | Description        | Default             | Required |
+| --------- | ------------------ | ------------------- | -------- |
+| `PORT`    | Server port number | `8000`              | No       |
+| `DB_PATH` | Database file path | `./appointments.db` | No       |
+
+### Example `.env` file:
+
+```env
+PORT=8000
+DB_PATH=./appointments.db
+
+
+📁 Project Structure
+Fitline-node/
 ├── src/
-│ ├── config/
-│ │ └── database.js # Database configuration & connection
-│ ├── models/
-│ │ ├── Appointment.js # Appointment model
-│ │ └── Doctor.js # Doctor model
-│ ├── controllers/
-│ │ ├── appointmentController.js # Appointment logic
-│ │ ├── doctorController.js # Doctor logic
-│ │ └── adminController.js # Admin logic
-│ ├── routes/
-│ │ ├── appointmentRoutes.js # Appointment endpoints
-│ │ ├── doctorRoutes.js # Doctor endpoints
-│ │ └── adminRoutes.js # Admin endpoints
-│ ├── middleware/
-│ │ └── errorHandler.js # Error handling middleware
-│ └── app.js # Express app configuration
+│   ├── config/
+│   │   └── database.js          # Database connection & configuration
+│   ├── models/
+│   │   ├── Appointment.js       # Appointment data model
+│   │   └── Doctor.js           # Doctor data model
+│   ├── controllers/
+│   │   ├── appointmentController.js  # Appointment business logic
+│   │   ├── doctorController.js       # Doctor business logic
+│   │   └── adminController.js        # Admin business logic
+│   ├── routes/
+│   │   ├── appointmentRoutes.js      # Appointment API routes
+│   │   ├── doctorRoutes.js           # Doctor API routes
+│   │   └── adminRoutes.js            # Admin API routes
+│   ├── middleware/
+│   │   └── errorHandler.js           # Global error handling
+│   └── app.js                        # Express application setup
 ├── seed/
-│ └── seed.js # Database seeding
-├── .env.example # Environment variables template
-├── .gitignore # Git ignore rules
-├── package.json # Dependencies & scripts
-├── server.js # Application entry point
-└── README.md # Documentation
-
-## 🔧 Installation
-
-### Prerequisites
-
-- Node.js 18 or higher
-- npm 6 or higher
-
-### Steps
-
-1. **Clone the repository**
-
+│   └── seed.js                       # Database seeder
+├── .env.example                       # Environment variables template
+├── .gitignore                         # Git ignore rules
+├── package.json                       # Dependencies & scripts
+├── server.js                          # Application entry point
+└── README.md                          # Project documentation
 ```
-git clone https://github.com/your-username/appointment-backend.git
-cd appointment-backend
-```
-
-npm install
-cp .env.example .env
-npm run seed
-npm run dev
-
-⚙️ Configuration
-Environment Variables
-Variable Description Default
-PORT Server port 8000
-DB_PATH Database file path ./appointments.db
-Available Scripts
-Script Description
-npm run dev Start development server with auto-reload
-npm start Start production server
-npm run seed Seed database with initial doctors
-
-🔗 API Endpoints
-Doctors
-Method Endpoint Description
-GET /api/doctors Get all doctors
-GET /api/doctors/:id Get doctor by ID
-Appointments
-Method Endpoint Description
-POST /api/appointments Create a new appointment
-GET /api/appointments Get all appointments
-GET /api/appointments/:id Get appointment by ID
-GET /api/appointments/stats Get appointment statistics
-PUT /api/appointments/:id Update appointment
-DELETE /api/appointments/:id Delete appointment
-Admin
-Method Endpoint Description
-GET /api/admin/stats Admin dashboard statistics
-
-📊 Database Schema
-Doctors Table
-Column Type Description
-id INTEGER Primary key (auto-increment)
-name TEXT Doctor's full name
-title TEXT Professional title
-experience TEXT Years of experience
-education TEXT Educational background
-specialization TEXT Area of expertise
-description TEXT Detailed description
-Appointments Table
-Column Type Description
-id INTEGER Primary key (auto-increment)
-full_name TEXT Patient's full name
-phone TEXT Patient's phone number
-date TEXT Appointment date
-description TEXT Appointment description
-doctor_id INTEGER Foreign key to doctors table
-created_at DATETIME Creation timestamp
-
-🚀 Deployment
-Deploy to Render
-Push your code to GitHub
-
-Go to Render
-
-Click "New +" → "Web Service"
-
-Connect your GitHub repository
-
-Configure:
-
-Build Command: npm install
-
-Start Command: npm start
-
-Environment Variables: Add from .env.example
-
-Click "Create Web Service"
-
-Deploy to Heroku
-
-# Install Heroku CLI
-
-brew install heroku/brew/heroku
-
-# Login to Heroku
-
-heroku login
-
-# Create app
-
-heroku create appointment-backend
-
-# Deploy
-
-git push heroku main
-Deploy to Vercel (Serverless)
-
-# Install Vercel CLI
-
-npm i -g vercel
-
-# Deploy
-
-vercel
-🤝 Contributing
-Fork the repository
-
-Create your feature branch (git checkout -b feature/amazing-feature)
-
-Commit your changes (git commit -m 'Add some amazing feature')
-
-Push to the branch (git push origin feature/amazing-feature)
-
-Open a Pull Request
-
-Coding Standards
-Use ESLint for code quality
-
-Follow the existing project structure
-
-Write clean, readable code
-
-Add comments for complex logic
-
-Update documentation accordingly
-
-📝 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-👨‍💻 Author
-Your Name
-
-GitHub: @your-username
-
-Email: your.email@example.com
-
-🙏 Acknowledgments
-Express.js community
-
-SQLite team
-
-All contributors and supporters
