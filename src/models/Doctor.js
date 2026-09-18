@@ -1,21 +1,36 @@
-class Doctor {
-  constructor({
-    id,
-    name,
-    title,
-    experience,
-    education,
-    specialization,
-    description,
-  }) {
-    this.id = id;
-    this.name = name;
-    this.title = title;
-    this.experience = experience;
-    this.education = education;
-    this.specialization = specialization;
-    this.description = description;
-  }
-}
+const mongoose = require("mongoose");
 
-module.exports = Doctor;
+const doctorSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    title: {
+      type: String,
+      trim: true,
+    },
+    experience: {
+      type: String,
+      trim: true,
+    },
+    education: {
+      type: String,
+      trim: true,
+    },
+    specialization: {
+      type: String,
+      trim: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+module.exports = mongoose.model("Doctor", doctorSchema);

@@ -6,8 +6,11 @@ const doctorRoutes = require("./routes/doctorRoutes");
 const appointmentRoutes = require("./routes/appointmentRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const errorHandler = require("./middleware/errorHandler");
+const { connectDB } = require("./config/database");
 
 const app = express();
+
+connectDB();
 
 const swaggerOptions = {
   definition: {

@@ -1,21 +1,35 @@
-class Appointment {
-  constructor({
-    id,
-    full_name,
-    phone,
-    date,
-    description,
-    doctor_id,
-    created_at,
-  }) {
-    this.id = id;
-    this.fullName = full_name;
-    this.phoneNumber = phone;
-    this.date = date;
-    this.description = description;
-    this.doctorId = doctor_id;
-    this.createdAt = created_at;
-  }
-}
+const mongoose = require("mongoose");
 
-module.exports = Appointment;
+const appointmentSchema = new mongoose.Schema(
+  {
+    fullName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    date: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+    },
+    doctorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Doctor",
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+module.exports = mongoose.model("Appointment", appointmentSchema);

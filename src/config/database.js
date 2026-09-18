@@ -1,46 +1,26 @@
-const sqlite3 = require("sqlite3").verbose();
-const { open } = require("sqlite");
+const mongoose = require("mongoose");
 require("dotenv").config();
 
-let db = null;
+let isConnected = false;
 
-async function getDb() {
-  if (!db) {
-    const DB_PATH = process.env.DB_PATH || "./appointments.db";
-
-    db = await open({
-      filename: DB_PATH,
-      driver: sqlite3.Database,
-    });
-
-    await db.exec(`
-      CREATE TABLE IF NOT EXISTS appointments (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        full_name TEXT NOT NULL,
-        phone TEXT NOT NULL,
-        date TEXT NOT NULL,
-        description TEXT,
-        doctor_id INTEGER NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    await db.exec(`
-      CREATE TABLE IF NOT EXISTS doctors (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        title TEXT,
-        experience TEXT,
-        education TEXT,
-        specialization TEXT,
-        description TEXT
-      )
-    `);
-
-    console.log("✅ Database initialized");
+async function connectDB() {
+  if (isConnected) {
+    return;
   }
 
-  return db;
+  const MONGODB_URI = process.env.MONGODB_URI;
+
+  try {
+    await mongoose.connect(MONGODB_URI, {
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+    });
+    isConnected = true;
+    console.log("✅ MongoDB connected successfully");
+  } catch (error) {
+    console.error("❌ MongoDB connection error:", error);
+    throw error;
+  }
 }
 
-module.exports = { getDb };
+module.exports = { connectDB };
